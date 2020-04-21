@@ -135,7 +135,7 @@ use the values for the AKS URL and Json Secret in the highlighted fields, give y
 
 ## Deploy a sample project
 
-
+I am using my [sample aks app repository](https://github.com/fortunkam/simpleaksapp) to test the deploys (clone to a devops repository, build the 2 docker files, push to acr, modify the yaml to point at your acr and then deploy to AKS).  Next steps for this project are to add a DevOps yaml multistage pipeline for testing.
 
 
 ## Useful links

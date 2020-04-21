@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {
+        "apiVersion" : "2020-03-01",
+        "privateEndpointName" : "/subscriptions/44e1dac0-0651-4835-8781-ee7b6e6f238f/resourceGroups/mfaks-spoke-rg/providers/Microsoft.Network/privateEndpoints/mfaks-storage-private-endpoint",
+        "aksId" : "/subscriptions/44e1dac0-0651-4835-8781-ee7b6e6f238f/resourcegroups/mfaks-spoke-rg/providers/Microsoft.ContainerService/managedClusters/mfaks-aks"
+    },
+    "resources": [],
+	"outputs": {
+		"networkInterface" : {
+            "type":"String",
+            "value": "[reference(variables('privateEndpointName'), variables('apiVersion')).networkInterfaces[0].id ]" 
+        },
+        "aksResourceGroup" : {
+            "type" : "String",
+            "value" : "[reference(variables('aksId'), variables('apiVersion')).nodeResourceGroup ]" 
+        },
+         "aksPrivateDNSName" : {
+            "type" : "String",
+            "value" : "[reference(variables('aksId'), variables('apiVersion')).privateFQDN ]" 
+        }
+	}
+}

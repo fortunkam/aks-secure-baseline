@@ -1,0 +1,8 @@
+password.txt
+errors.txt
+test.*
+Terraform/.terraform
+Terraform/.terraform.*
+Terraform/terraform.*
+Terraform/ARM/test*.*
+

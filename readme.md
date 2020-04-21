@@ -10,6 +10,8 @@ It includes.
 - An Ubuntu Linux machine configured as an Azure DevOps build agent with Docker Installed.
 - An Ubuntu Linux machine configured as an Azure DevOps deploy agent with Kubernetes CLI installed.
 
+![Architecture](/images/Architecture.png "Architecture")
+
 ## Pre-requisites
 
 You will need the following installed to deploy this (versions I used show in brackets)

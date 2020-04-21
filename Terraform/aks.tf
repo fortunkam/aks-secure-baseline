@@ -38,3 +38,15 @@ resource "azurerm_role_assignment" "aksacrpull" {
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 }
+
+resource "azurerm_role_assignment" "aks_spoke_contributor" {
+  scope                = azurerm_resource_group.spoke.id
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+}
+
+resource "azurerm_role_assignment" "aks_spoke_network_contributor" {
+  scope                = azurerm_subnet.aks.id
+  role_definition_name = "Network Contributor"
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+}

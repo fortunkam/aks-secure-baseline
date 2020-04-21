@@ -25,8 +25,10 @@ In your Azure DevOps account you will need to create 2 new Build agent pools (Pr
 ![Agent Pools](/images/DevOps%20Build%20Agent.png "Agent Pools")
 
 You will also need to create a Personal Access Token (PAT) so that the build agents can be registered with your DevOps account
-![PAT Token Menu](/images/PAT%20TOken%20Menu.png "PAT Token Menu")
-![New PAT Token](/images/PAT%20TOken%20-%20New%20Token.png "New PAT Token")
+![PAT Token Menu](/images/PAT%20Token%20Menu.png "PAT Token Menu")
+
+![New PAT Token](/images/PAT%20Token%20-%20New%20Token.png "New PAT Token")
+
 I have create my token with access to everything, in a real world scenario you will need to decide the minimum permissions required.
 
 ## Getting ready to run Terraform
@@ -97,6 +99,14 @@ Now connect to the AKS cluster using
 
     az aks get-credentials --name <AKS NAME> --resource-group <SPOKE RESOURCE GROUP NAME>
 
+First lets set up the connection between the AKS cluster and the Container Registry, first we get the id of the ACR.
+
+    az acr show --name <ACR NAME> -g <SPOKE RESOURCE GROUP NAME> --query id -o tsv
+
+then we use that value to link the accounts
+
+    az aks update --name <AKS NAME> --resource-group <SPOKE RESOURCE GROUP NAME> --attach-acr <ACR ID FROM PREVIOUS COMMAND>
+
 Now copy the [DeployServiceAccount.yaml](/AKS/DeployServiceAccount.yaml) file to the VM and run the following command
 
     kubectl apply -f <PATH TO DeployServiceAccount.yaml>
@@ -138,6 +148,8 @@ use the values for the AKS URL and Json Secret in the highlighted fields, give y
 [https://docs.microsoft.com/en-us/azure/container-registry/container-registry-private-link]
 
 [https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml]
+
+[https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal]
 
 Instead of using Linux machines for build agents you could use Docker build agents.
 

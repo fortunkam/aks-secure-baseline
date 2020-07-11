@@ -5,3 +5,7 @@ output "bastion_password" {
 output "private_key_pem" {
     value = tls_private_key.build.private_key_pem
 }
+
+output "aks_private_key_pem" {
+    value = tls_private_key.aks.private_key_pem
+}

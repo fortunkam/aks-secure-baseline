@@ -1,3 +1,8 @@
+resource "tls_private_key" "aks" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name
   location            = azurerm_resource_group.spoke.location
@@ -17,6 +22,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   private_link_enabled = true
 
+  linux_profile {
+    admin_username = "AzureAdmin"
+    ssh_key  {
+      key_data = tls_private_key.aks.public_key_openssh 
+    }
+  }
+
   network_profile {
       network_plugin = "azure"      
       load_balancer_sku = "Standard"
@@ -26,7 +38,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
       outbound_type = "userDefinedRouting"
 
   }
-
   role_based_access_control {
       enabled = true
   }

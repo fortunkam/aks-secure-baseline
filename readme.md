@@ -3,9 +3,14 @@
 This repo shows how to provision an environment for working with a private AKS cluster.
 It includes.
 - A Private Link Enabled AKS cluster with outbound traffic routed to a firewall (so no public IP addresses owned by the cluster)
-- An Azure Firewall to control the outbound traffic
+- An Azure Firewall to control the outbound traffic (with required outbound rules + docker and quay public registries)
 - 2 virtual networks peered to simulate a hub/spoke model of resource placement
 - A Private Link Enabled Container Registry (ACR) - Note: this is currently in preview!
+- A Private Link Enabled Key Vault - Can be used by AKS as a [secret store](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
+- A Private Link Enabled SQL Azure instance - to show connectivity to network resources
+- An App Gateway - Can be used by AKS as a WAF enabled [ingress controller](https://azure.github.io/application-gateway-kubernetes-ingress/)
+- A Point to Site VPN (for accessing the AKS api without needing the jump off/bastion vm)
+- A Log Analytics workspace
 - A Windows VM configured as a Jump off box/bastion machine for remote access to the network
 - An Ubuntu Linux machine configured as an Azure DevOps build agent with Docker Installed.
 - An Ubuntu Linux machine configured as an Azure DevOps deploy agent with Kubernetes CLI installed.

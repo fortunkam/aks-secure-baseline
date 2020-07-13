@@ -9,27 +9,36 @@ resource "azurerm_subnet" "firewall" {
   name                 = local.firewall_subnet
   resource_group_name  = azurerm_resource_group.hub.name
   virtual_network_name = azurerm_virtual_network.hub.name
-  address_prefix       = local.firewall_subnet_iprange
+  address_prefixes       = [local.firewall_subnet_iprange]
 }
 
 resource "azurerm_subnet" "buildagent" {
   name                 = local.buildagent_subnet
   resource_group_name  = azurerm_resource_group.hub.name
   virtual_network_name = azurerm_virtual_network.hub.name
-  address_prefix       = local.buildagent_subnet_iprange
+  address_prefixes       = [local.buildagent_subnet_iprange]
 }
 resource "azurerm_subnet" "deployagent" {
   name                 = local.deployagent_subnet
   resource_group_name  = azurerm_resource_group.hub.name
   virtual_network_name = azurerm_virtual_network.hub.name
-  address_prefix       = local.deployagent_subnet_iprange
+  address_prefixes       = [local.deployagent_subnet_iprange]
 }
 
 resource "azurerm_subnet" "bastion" {
   name                 = local.bastion_subnet
   resource_group_name  = azurerm_resource_group.hub.name
   virtual_network_name = azurerm_virtual_network.hub.name
-  address_prefix       = local.bastion_subnet_iprange
+  address_prefixes       = [local.bastion_subnet_iprange]
+  service_endpoints = [ "Microsoft.Sql" ]
+}
+
+resource "azurerm_subnet" "vpn" {
+  name                 = local.vpn_subnet
+  resource_group_name  = azurerm_resource_group.hub.name
+  virtual_network_name = azurerm_virtual_network.hub.name
+  address_prefixes       = [local.vpn_subnet_iprange]
+  service_endpoints = [ "Microsoft.Sql" ]
 }
 
 resource "azurerm_virtual_network" "spoke" {
@@ -43,15 +52,33 @@ resource "azurerm_subnet" "aks" {
   name                 = local.aks_subnet
   resource_group_name  = azurerm_resource_group.spoke.name
   virtual_network_name = azurerm_virtual_network.spoke.name
-  address_prefix       = local.aks_subnet_iprange
+  address_prefixes       = [local.aks_subnet_iprange]
   enforce_private_link_endpoint_network_policies = true
+  service_endpoints = [ "Microsoft.Sql" ]
 }
 
 resource "azurerm_subnet" "acr" {
   name                 = local.acr_subnet
   resource_group_name  = azurerm_resource_group.spoke.name
   virtual_network_name = azurerm_virtual_network.spoke.name
-  address_prefix       = local.acr_subnet_iprange
+  address_prefixes       = [local.acr_subnet_iprange]
+  enforce_private_link_endpoint_network_policies = true
+}
+
+resource "azurerm_subnet" "appgateway" {
+  name                 = local.appgateway_subnet
+  resource_group_name  = azurerm_resource_group.spoke.name
+  virtual_network_name = azurerm_virtual_network.spoke.name
+  address_prefixes       = [local.appgateway_subnet_iprange]
+  enforce_private_link_endpoint_network_policies = true
+   service_endpoints = [ "Microsoft.Sql" ]
+}
+
+resource "azurerm_subnet" "sql" {
+  name                 = local.sql_subnet
+  resource_group_name  = azurerm_resource_group.spoke.name
+  virtual_network_name = azurerm_virtual_network.spoke.name
+  address_prefixes       = [local.sql_subnet_iprange]
   enforce_private_link_endpoint_network_policies = true
 }
 
@@ -79,6 +106,8 @@ resource "azurerm_virtual_network_peering" "hubtospoke" {
   resource_group_name       = azurerm_resource_group.hub.name
   virtual_network_name      = azurerm_virtual_network.hub.name
   remote_virtual_network_id = azurerm_virtual_network.spoke.id
+  allow_gateway_transit     = true
+
 }
 
 resource "azurerm_virtual_network_peering" "spoketohub" {
@@ -86,4 +115,6 @@ resource "azurerm_virtual_network_peering" "spoketohub" {
   resource_group_name       = azurerm_resource_group.spoke.name
   virtual_network_name      = azurerm_virtual_network.spoke.name
   remote_virtual_network_id = azurerm_virtual_network.hub.id
+  use_remote_gateways       = true
+  allow_forwarded_traffic   = true
 }

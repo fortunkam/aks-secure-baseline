@@ -6,3 +6,4 @@ Terraform/.terraform.*
 Terraform/terraform.*
 Terraform/ARM/test*.*
 
+Terraform/scripts/P2SVPNRootCert.cer

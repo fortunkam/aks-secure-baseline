@@ -97,8 +97,8 @@ locals {
     appgateway_http_setting_name="${var.prefix}-agw-http-setting"
 
     sql_dns_zone="privatelink.database.windows.net"
-    sql_dns_link_hub="{var.prefix}-sql-dns-hub-link"
-    sql_dns_link_spoke="{var.prefix}-sql-dns-spoke-link"
+    sql_dns_link_hub="${var.prefix}-sql-dns-hub-link"
+    sql_dns_link_spoke="${var.prefix}-sql-dns-spoke-link"
 
     sql_private_endpoint="${var.prefix}-sql-private-endpoint"
     sql_private_link="${var.prefix}-sql-private-link"
@@ -118,8 +118,8 @@ locals {
     sql_firewall_allow_bastion_subnet="${var.prefix}-sql-firewall-allow-bastion-subnet"
 
     keyvault_dns_zone="privatelink.vaultcore.azure.net"
-    keyvault_dns_link_hub="{var.prefix}-kv-dns-hub-link"
-    keyvault_dns_link_spoke="{var.prefix}-kv-dns-spoke-link"
+    keyvault_dns_link_hub="${var.prefix}-kv-dns-hub-link"
+    keyvault_dns_link_spoke="${var.prefix}-kv-dns-spoke-link"
     keyvault_private_endpoint="${var.prefix}-kv-private-endpoint"
     keyvault_private_link="${var.prefix}-kv-private-link"
 

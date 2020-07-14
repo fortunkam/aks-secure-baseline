@@ -142,21 +142,36 @@ use the values for the AKS URL and Json Secret in the highlighted fields, give y
 
 I am using my [sample aks app repository](https://github.com/fortunkam/simpleaksapp) to test the deploys (clone to a devops repository, build the 2 docker files, push to acr, modify the yaml to point at your acr and then deploy to AKS).  Next steps for this project are to add a DevOps yaml multistage pipeline for testing.
 
+## Gotchas/Caveats
+
+Things to be mindful of when deploying containers to this cluster.
+
+- The firewall is set to restrict all outbound traffic from the cluster, if your deploys aren't working the chances are the firewall is blocking something.  I have added the docker and quay public repository domains as an app rule, you may need to add more.
+- Each private link service has it's own firewall to restrict traffic to only the required subnets.  I have configured this on the SQL server but not on the keyvault or the Container Registry.  This is on my TODO list.
+- It is still possible to create a public load balancer directly into the AKS cluster (bypassing the app gateway).  This can be restricted using an Azure Policy on the RC_* resource group to prevent the creation of public IP addresses.  Alternatively a policy can be applied to the cluster itself (although this is still in preview) [Azure Policy for Kubernetes](https://docs.microsoft.com/en-gb/azure/governance/policy/concepts/policy-for-kubernetes)
+
+
 
 ## Useful links
-[https://docs.microsoft.com/en-us/azure/aks/private-clusters]
+https://docs.microsoft.com/en-us/azure/aks/private-clusters
 
-[https://docs.microsoft.com/en-us/azure/terraform/terraform-create-k8s-cluster-with-tf-and-aks]
+https://docs.microsoft.com/en-us/azure/terraform/terraform-create-k8s-cluster-with-tf-and-aks
 
-[https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html]
+https://www.terraform.io/docs/providers/azurerm/r/kubernetes_cluster.html
 
-[https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal]
+https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal
 
-[https://docs.microsoft.com/en-us/azure/container-registry/container-registry-private-link]
+https://docs.microsoft.com/en-us/azure/container-registry/container-registry-private-link
 
-[https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml]
+https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
 
-[https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal]
+https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal
+
+https://github.com/Azure/secrets-store-csi-driver-provider-azure
+
+https://azure.github.io/application-gateway-kubernetes-ingress/
+
+
 
 Instead of using Linux machines for build agents you could use Docker build agents.
 

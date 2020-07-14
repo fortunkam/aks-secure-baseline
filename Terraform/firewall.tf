@@ -56,3 +56,37 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
     }
   }
 }
+
+resource "azurerm_firewall_application_rule_collection" "docker" {
+  name                = local.firewall_docker_application_rule_collection
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.hub.name
+  priority            = 400
+  action              = "Allow"
+
+  rule {
+    name = local.firewall_docker_application_rule
+
+    source_addresses = [
+      "*",
+    ]
+
+    target_fqdns = [
+        "docker.io",
+        "quay.io",
+        "*.docker.io",
+        "*.docker.com",
+        "*.quay.io"
+    ]
+
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+
+    protocol {
+      port = "80"
+      type = "Http"
+    }
+  }
+}

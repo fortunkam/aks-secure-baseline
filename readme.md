@@ -40,6 +40,7 @@ I have create my token with access to everything, in a real world scenario you w
 
 ## Getting ready to run Terraform
 
+First you need to generate the certificate that is required by the P2S VPN, run the [CreateVPNCerts.ps1](Terraform/scripts/CreateVPNCerts.ps1) script in powershell to create and register a new self-signed cert.
 In the Terraform folder create a file called terraform.tfvars, this will contain the variables you pass to create your environment.
 The file should contain the following...
 

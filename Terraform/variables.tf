@@ -75,6 +75,8 @@ locals {
     bastion_username="AzureAdmin"
     bastion_server_private_ip="10.0.2.128"
     aks_name="${var.prefix}-aks"
+    aks_node_resource_group_name="${var.prefix}-aks-rg"
+    aka_dns_link_hub="${var.prefix}-aks-dns-hub-link"
     storage_deploy="${var.prefix}deploy"
     storage_deploy_container_name="scripts"
     build_agent_linux_url="https://vstsagentpackage.azureedge.net/agent/2.166.2/vsts-agent-linux-x64-2.166.2.tar.gz"
@@ -125,6 +127,9 @@ locals {
 
     firewall_docker_application_rule_collection="docker_rule_collection"
     firewall_docker_application_rule="docker_rule"
+
+    firewall_port_network_rule_collection="port_rule_collection"
+    firewall_port_network_rule="port_rule"
 
     loganalytics_workspace_name="${var.prefix}-log-analytics"
 

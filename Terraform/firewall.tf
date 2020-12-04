@@ -33,6 +33,7 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
     ]
 
     target_fqdns = [
+        "*.hcp.${azurerm_resource_group.hub.location}.azmk8s.io",
         "aksrepos.azurecr.io",
         "*blob.core.windows.net",
         "mcr.microsoft.com",
@@ -42,7 +43,10 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
         "login.microsoftonline.com",
         "ntp.ubuntu.com",
         "packages.microsoft.com",
-        "acs-mirror.azureedge.net"
+        "acs-mirror.azureedge.net",
+        "security.ubuntu.com", 
+        "azure.archive.ubuntu.com", 
+        "changelogs.ubuntu.com"
     ]
 
     protocol {
@@ -88,5 +92,39 @@ resource "azurerm_firewall_application_rule_collection" "docker" {
       port = "80"
       type = "Http"
     }
+  }
+}
+
+resource "azurerm_firewall_network_rule_collection" "port_rules" {
+  name                = local.firewall_port_network_rule_collection
+  azure_firewall_name = azurerm_firewall.firewall.name
+  resource_group_name = azurerm_resource_group.hub.name
+  priority            = 500
+  action              = "Allow"
+
+  rule {
+    name = local.firewall_port_network_rule
+
+    source_addresses = [
+      "*",
+    ]
+
+    destination_ports = [
+      # The first 2 ports are not required for private clusters
+      "1194",
+      "9000",
+      "123",
+      "53",
+      "80",
+      "443"
+    ]
+
+    destination_addresses = [
+      "*"
+    ]
+
+    protocols = [
+      "Any"
+    ]
   }
 }

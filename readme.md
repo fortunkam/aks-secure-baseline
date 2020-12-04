@@ -54,7 +54,7 @@ The file should contain the following...
 for example
 
     location = "centralus"
-    refix = "mfaks"
+    prefix = "mfaks"
     evopsUrl = "https://dev.azure.com/myOrg"
     evopsPatToken = "thisrandomcollectionofcharactersismypattoken"
     evopsBuildAgentPool = "SelfHostLinuxBuildAgents"
@@ -80,7 +80,7 @@ and finally run with (note the auto-approve flag skips the manual verification s
 
     terraform apply -auto-approve
 
-This will take about 20 minutes to provision everything.
+This will take about 30 minutes to provision everything.
 When it is complete you should have 1 build agent configured and active per group in azure DevOps.
 ![Configured DevOps Agent](/images/DevOpsConfiguredAgent.png "Configured DevOps Agent")
 

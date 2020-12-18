@@ -18,6 +18,7 @@ sudo apt-get update
 apt-cache policy docker-ce
 
 sudo apt-get install -y docker-ce
+sudo apt-get install -y unzip
 
 cd /home/adminuser
 mkdir myagent

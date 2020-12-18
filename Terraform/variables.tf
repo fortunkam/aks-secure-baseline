@@ -17,6 +17,9 @@ variable devopsBuildAgentPool {
 variable devopsDeployAgentPool {
 }
 
+variable devopsServiceConnectionServicePrincipalObjectId {
+}
+
 variable sqlUsername {
   default="sqladmin"
 }

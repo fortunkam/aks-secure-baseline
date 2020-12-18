@@ -84,3 +84,44 @@ resource "azurerm_key_vault_access_policy" "aksManaged" {
 
   depends_on = [azurerm_key_vault.aks_keyvault, azurerm_kubernetes_cluster.aks]
 }
+
+resource "azurerm_key_vault_access_policy" "aksVMSSManaged" {
+  key_vault_id = azurerm_key_vault.aks_keyvault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+
+   key_permissions = [
+      "get",
+    ]
+
+    secret_permissions = [
+      "get",
+    ]
+
+    certificate_permissions = [
+      "get",
+    ]
+
+  depends_on = [azurerm_key_vault.aks_keyvault, azurerm_kubernetes_cluster.aks]
+}
+
+resource "azurerm_key_vault_access_policy" "aksDevOpsServiceConnection" {
+  key_vault_id = azurerm_key_vault.aks_keyvault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = var.devopsServiceConnectionServicePrincipalObjectId
+
+   key_permissions = [
+    ]
+
+    secret_permissions = [
+      "get",
+      "list"
+    ]
+
+    certificate_permissions = [
+    ]
+
+  depends_on = [azurerm_key_vault.aks_keyvault, azurerm_kubernetes_cluster.aks]
+}
